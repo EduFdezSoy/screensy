@@ -20,9 +20,9 @@ jobs:
     - name: Publish
       uses: docker/build-push-action@v3
       with:
+        context: ./screensy-rendezvous
         push: true
         tags: rendezvous:latest
-        file: ./screensy-rendezvous/Dockerfile
         
         
   build_website:
@@ -37,6 +37,6 @@ jobs:
     - name: Publish
       uses: docker/build-push-action@v3
       with:
+        context: ./screensy-website
         push: true
         tags: website:latest
-        file: ./screensy-website/Dockerfile
