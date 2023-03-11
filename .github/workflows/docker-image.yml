@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: ls && docker build . --file screensy-redezvous/Dockerfile --tag my-image-name:$(date +%s)
+      run: pwd && ls && cd ./screensy-redezvous && docker build . --file Dockerfile --tag redezvous:$(date +%s)
