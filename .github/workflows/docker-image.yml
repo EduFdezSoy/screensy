@@ -22,7 +22,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: EduFdezSoy/rendezvous:latest
+        tags: edufdezsoy/rendezvous:latest
         
         
   build_website:
@@ -39,4 +39,4 @@ jobs:
       with:
         context: ./screensy-website
         push: true
-        tags: EduFdezSoy/website:latest
+        tags: edufdezsoy/website:latest
