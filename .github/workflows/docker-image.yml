@@ -22,7 +22,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: edufdezsoy/rendezvous:latest
+        tags: ghcr.io/edufdezsoy/rendezvous:latest
         
         
   build_website:
@@ -39,4 +39,4 @@ jobs:
       with:
         context: ./screensy-website
         push: true
-        tags: edufdezsoy/website:latest
+        tags: ghcr.io/edufdezsoy/website:latest
