@@ -22,11 +22,12 @@ jobs:
       with:
         push: true
         tags: rendezvous:latest
+        file: ./screensy-rendezvous/Dockerfile
+        
         
   build_website:
 
     runs-on: ubuntu-latest
-
 
     steps:
     - uses: actions/checkout@v3
@@ -38,3 +39,4 @@ jobs:
       with:
         push: true
         tags: website:latest
+        file: ./screensy-website/Dockerfile
