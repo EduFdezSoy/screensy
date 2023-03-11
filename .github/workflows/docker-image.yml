@@ -8,11 +8,33 @@ on:
 
 jobs:
 
-  build:
+  build_rendezvous:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: pwd && ls && cd ./screensy-rendezvous && docker build . --file Dockerfile --tag rendezvous:$(date +%s)
+      run: cd ./screensy-rendezvous && docker build . --file Dockerfile --tag rendezvous:latest
+      
+    - name: Publish
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: rendezvous:latest
+        
+  build_website:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: cd ./screensy-website && docker build . --file Dockerfile --tag website:latest
+
+    - name: Publish
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: website:latest
