@@ -30,7 +30,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ghcr.io/${{ GITHUB_REPOSITORY }}/rendezvous:latest
+        tags: ghcr.io/${GITHUB_REPOSITORY}/rendezvous:latest
 
       env:
         DOCKER_USERNAME: ${{ github.actor }}
