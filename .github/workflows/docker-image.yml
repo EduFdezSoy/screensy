@@ -13,7 +13,10 @@ jobs:
     
     steps:
     - name: form ghcr tag
-      run: echo "ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')/rendezvous:latest" >>${GITHUB_BASE_REPO}
+      run: echo "GITHUB_REPOSITORY=ghcr.io/${{ github.repository }}" >>${GITHUB_ENV}
+  
+    - name: downcase REPO
+      run: echo "GITHUB_BASE_REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
   
   build_n_push_rendezvous:
 
@@ -30,7 +33,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ${{ GITHUB_BASE_REPO }}/rendezvous:latest
+        tags: ${ GITHUB_BASE_REPO }/rendezvous:latest
 
       env:
         DOCKER_USERNAME: ${{ github.actor }}
