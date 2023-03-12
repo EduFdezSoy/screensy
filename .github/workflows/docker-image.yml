@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: debug
-      run: echo "ghcr.io/$(echo \"${{ github.repository }}\" | tr '[:upper:]' '[:lower:]')/rendezvous:latest"
+      run: echo "ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')/rendezvous:latest"
   
     - name: Checkout
       uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/rendezvous:latest
+        tags: ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')/rendezvous:latest
 
       env:
         DOCKER_USERNAME: ${{ github.actor }}
