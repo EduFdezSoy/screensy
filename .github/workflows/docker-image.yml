@@ -12,12 +12,13 @@ jobs:
 
     runs-on: ubuntu-latest
     
+    env:
+      GITHUB_REPOSITORY: ${{ github.repository }}
+    
     steps:
+    
     - name: downcase REPO
-      run: echo "GITHUB_REPOSITORY=${{github.repository}}" >>${GITHUB_ENV}
-      
-    - name: downcase REPO 2
-      run: echo "REPO=${${{github.repository}},,}" >>${GITHUB_ENV}
+      run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
     - name: use REPO
       run: echo "The value of REPO is ${REPO}"
       
