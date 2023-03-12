@@ -22,7 +22,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ghcr.io/${{ github.repository }}/rendezvous:latest
+        tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}/rendezvous:latest
       env:
         DOCKER_USERNAME: ${{ github.actor }}
         DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
       with:
         context: ./screensy-website
         push: true
-        tags: ghcr.io/${{ github.repository }}/website:latest
+        tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}/website:latest
       env:
         DOCKER_USERNAME: ${{ github.actor }}
         DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
