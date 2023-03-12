@@ -22,7 +22,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ghcr.io/${{ github.repository | lower }}/rendezvous:latest
+        tags: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/rendezvous:latest
       env:
         DOCKER_USERNAME: ${{ github.actor }}
         DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
