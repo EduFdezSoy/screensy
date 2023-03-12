@@ -14,7 +14,12 @@ jobs:
     
     steps:
     - name: downcase REPO
-      run: echo "GITHUB_REPO=${{github.repository}}" >>${GITHUB_ENV}
+      run: echo "GITHUB_REPOSITORY=${{github.repository}}" >>${GITHUB_ENV}
+      
+    - name: downcase REPO 2
+      run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+    - name: use REPO
+      run: echo "The value of REPO is ${REPO}"
       
     - name: Checkout
       uses: actions/checkout@v3
@@ -25,7 +30,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ghcr.io/${GITHUB_REPO}/rendezvous:latest
+        tags: ghcr.io/${{ GITHUB_REPOSITORY }}/rendezvous:latest
 
       env:
         DOCKER_USERNAME: ${{ github.actor }}
