@@ -7,23 +7,15 @@ on:
     branches: [ "main" ]
 
 jobs:
-  init:
-  
+
+  build_n_push_rendezvous:
+
     runs-on: ubuntu-latest
     
     steps:
-    - name: form ghcr tag
-      run: echo "GITHUB_REPOSITORY=ghcr.io/${{ github.repository }}" >>${GITHUB_ENV}
-  
     - name: downcase REPO
-      run: echo "GITHUB_BASE_REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-  
-  build_n_push_rendezvous:
-
-    needs: [init]
-    runs-on: ubuntu-latest
-    
-    steps:          
+      run: echo "GITHUB_BASE_REPO=${{github.repository,,}}" >>${GITHUB_ENV}
+      
     - name: Checkout
       uses: actions/checkout@v3
       #run: cd ./screensy-rendezvous && docker build . --file Dockerfile --tag rendezvous:latest
@@ -33,7 +25,7 @@ jobs:
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ${ GITHUB_BASE_REPO }/rendezvous:latest
+        tags: echo "ghcr.io/${ GITHUB_BASE_REPO }/rendezvous:latest"
 
       env:
         DOCKER_USERNAME: ${{ github.actor }}
@@ -41,7 +33,6 @@ jobs:
         
   build_website:
 
-    needs: [init]
     runs-on: ubuntu-latest
 
     steps:
