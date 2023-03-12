@@ -39,18 +39,18 @@ jobs:
         push: true
         tags: ghcr.io/${{ env.REPO }}:latest
 
-#   build_website:
+  build_website:
 
-#     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Build the Docker image
-#       run: cd ./screensy-website && docker build . --file Dockerfile --tag website:latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: cd ./screensy-website && docker build . --file Dockerfile --tag website:latest
 
-#     - name: Publish
-#       uses: docker/build-push-action@v3
-#       with:
-#         context: ./screensy-website
-#         push: true
-#         tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}/website:latest
+    - name: Publish
+      uses: docker/build-push-action@v3
+      with:
+        context: ./screensy-website
+        push: true
+        tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}/website:latest
