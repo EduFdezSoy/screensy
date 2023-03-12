@@ -8,29 +8,24 @@ on:
 
 jobs:
 
-  build_rendezvous:
+  build_n_push_rendezvous:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: cd ./screensy-rendezvous && docker build . --file Dockerfile --tag rendezvous:latest
+    - name: Checkout
+      uses: actions/checkout@v3
+      #run: cd ./screensy-rendezvous && docker build . --file Dockerfile --tag rendezvous:latest
 
-    - name: Login to Github Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Publish
+    - name: Build n Publish
       uses: docker/build-push-action@v3
       with:
         context: ./screensy-rendezvous
         push: true
-        tags: ghcr.io/edufdezsoy/rendezvous:latest
-        
+        tags: ghcr.io/${{ github.repository }}/rendezvous:latest
+      env:
+        DOCKER_USERNAME: ${{ github.actor }}
+        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         
   build_website:
 
@@ -41,16 +36,13 @@ jobs:
     - name: Build the Docker image
       run: cd ./screensy-website && docker build . --file Dockerfile --tag website:latest
 
-    - name: Login to Github Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Publish
       uses: docker/build-push-action@v3
       with:
         context: ./screensy-website
         push: true
-        tags: ghcr.io/edufdezsoy/website:latest
+        tags: ghcr.io/${{ github.repository }}/website:latest
+      env:
+        DOCKER_USERNAME: ${{ github.actor }}
+        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        
