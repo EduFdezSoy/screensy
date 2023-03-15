@@ -16,16 +16,13 @@ jobs:
       GITHUB_REPOSITORY: ${{ github.repository }}
     
     steps:
-
     - name: downcase REPO
       run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
     - name: use REPO
       run: echo "The value of REPO is ${REPO}"
 
+    - uses: actions/checkout@v2
     - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Login to Github Container Registry
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
@@ -33,11 +30,17 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build n Publish
-      uses: docker/build-push-action@v3
-      with:
-        context: ./screensy-rendezvous
-        push: true
-        tags: ghcr.io/${{ env.REPO }}:latest
+      run: |
+        cd ./screensy-rendezvous
+        docker build . --tag ghcr.io/${{ env.REPO }}:latest
+        docker run ghcr.io/${{ env.REPO }}:latest
+        docker push ghcr.io/${{ env.REPO }}:latest
+
+      # uses: docker/build-push-action@v3
+      # with:
+      #   context: ./screensy-rendezvous
+      #   push: true
+      #   tags: ghcr.io/${{ env.REPO }}:latest
 
   build_website:
 
