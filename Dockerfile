@@ -73,9 +73,4 @@ EXPOSE 80
 EXPOSE 443
 EXPOSE 3478
 
-CMD [ /
-    "cd", "web", "&&", /
-    "./screensy-website", "&", /
-    "cd", "rend", "&&", /
-    "npm", "start" /
-    ]
+CMD [ "cd", "web", "&&", "./screensy-website", "&", "cd", "rend", "&&", "npm", "start" ]
