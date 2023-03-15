@@ -55,7 +55,7 @@ COPY --from=builder /home/node/app/server.ts ./rend
 
 # copy resource files for rendezvous
 COPY screeny-rendezvous/package.json ./rend
-COPY screeny-rendezvous/package-lock.json ./rend
+# COPY screeny-rendezvous/package-lock.json ./rend
 
 RUN cd rend && npm install --only=production
 
