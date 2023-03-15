@@ -74,7 +74,8 @@ EXPOSE 443
 EXPOSE 3478
 
 CMD [
-    "./web/screensy-website", "&&",
+    "cd", "web", "&&",
+    "./screensy-website", "&&",
     "cd", "rend", "&&",
     "npm", "start"
     ]
