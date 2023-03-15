@@ -33,7 +33,6 @@ jobs:
       run: |
         cd ./screensy-rendezvous
         docker build . --tag ghcr.io/${{ env.REPO }}:latest
-        docker run ghcr.io/${{ env.REPO }}:latest
         docker push ghcr.io/${{ env.REPO }}:latest
 
       # uses: docker/build-push-action@v3
