@@ -52,10 +52,8 @@ COPY screeny-website/styles.css ./web/
 COPY --from=builder /home/node/app/server.js ./rend
 COPY --from=builder /home/node/app/server.js.map ./rend
 COPY --from=builder /home/node/app/server.ts ./rend
-
-# copy resource files for rendezvous
-COPY screeny-rendezvous/package.json ./rend
-# COPY screeny-rendezvous/package-lock.json ./rend
+COPY --from=builder /home/node/app/package.json ./rend
+COPY --from=builder /home/node/app/package-lock.json ./rend
 
 RUN cd rend && npm install --only=production
 
