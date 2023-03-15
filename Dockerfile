@@ -3,8 +3,8 @@ FROM node:14.16-alpine3.13 AS typescript_builder
 
 WORKDIR /home/node/app
 
-COPY screeny-website/tsconfig.json ./
-COPY screeny-website/screensy.ts ./
+COPY screensy-website/tsconfig.json ./
+COPY screensy-website/screensy.ts ./
 
 RUN npm install typescript@4.4.2 -g
 RUN tsc
@@ -13,8 +13,8 @@ FROM golang:1.15 as go_builder
 
 WORKDIR /go/src/app
 
-COPY screeny-website/main.go ./
-COPY screeny-website/go.mod ./
+COPY screensy-website/main.go ./
+COPY screensy-website/go.mod ./
 
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -o screensy-website .
@@ -24,11 +24,11 @@ FROM node:14.16-alpine3.13 AS builder
 
 WORKDIR /home/node/app
 
-COPY screeny-rendezvous/tsconfig.json ./
-COPY screeny-rendezvous/server.ts ./
+COPY screensy-rendezvous/tsconfig.json ./
+COPY screensy-rendezvous/server.ts ./
 
-COPY screeny-rendezvous/package.json ./
-COPY screeny-rendezvous/package-lock.json ./
+COPY screensy-rendezvous/package.json ./
+COPY screensy-rendezvous/package-lock.json ./
 
 RUN npm install --only=development
 RUN npx tsc
@@ -45,15 +45,17 @@ COPY --from=typescript_builder /home/node/app/screensy.ts ./web/
 COPY --from=go_builder /go/src/app/screensy-website ./web/
 
 # copy resource files for the website
-COPY screeny-website/translations/ ./web/translations
-COPY screeny-website/styles.css ./web/
+COPY screensy-website/translations/ ./web/translations
+COPY screensy-website/styles.css ./web/
 
 # copy files from the rendezvous (builder)
 COPY --from=builder /home/node/app/server.js ./rend
 COPY --from=builder /home/node/app/server.js.map ./rend
 COPY --from=builder /home/node/app/server.ts ./rend
-COPY --from=builder /home/node/app/package.json ./rend
-COPY --from=builder /home/node/app/package-lock.json ./rend
+
+# copy resource files for rendezvous
+COPY screensy-rendezvous/package.json ./rend
+COPY screensy-rendezvous/package-lock.json ./rend
 
 RUN cd rend && npm install --only=production
 
