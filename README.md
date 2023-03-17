@@ -1,6 +1,11 @@
 # screensy
 
-| Authors                          | Date             |
+| Node Rewrite Author              | Date             |
+| -------------------------------- | ---------------- |
+| Eduardo Fernandez                | March 17th, 2023 |
+> <sub>same date with a year diference, just a coincidence</sub>
+
+| Original Authors                 | Date             |
 | -------------------------------- | ---------------- |
 | Stef Gijsberts, Marijn van Wezel | March 17th, 2022 |
 

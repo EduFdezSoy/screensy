@@ -11,7 +11,7 @@
         [pull request #32].
 -   Eduardo Fernandez
     -   Rewrited the server from Go to Node.js and unified rendezvous and webserver.
-    -   Created Docker (under ghcr.io)
+    -   Created Docker Container (under ghcr.io)
 
 ## Translations
 

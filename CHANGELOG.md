@@ -6,8 +6,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
 ## [Unreleased]
--   Webserver rewrited to node.js and build in a single executable with the rendezvous.
--   Added Docker Image to ghcr.io
+
+
+## 2.0.0 - 2023-03-17
+
+### Added
+
+-   Webserver rewrited to `node.js`.
+-   Merged HTTP server with the rendezvous WebSocket server under same port and executable.
+-   Created Docker Image and added to ghcr.io ([ghcr.io/edufdezsoy/screensy](https://github.com/EduFdezSoy/screensy/pkgs/container/screensy)) with CI.
 
 ## 1.9.0 - 2023-02-07
 
