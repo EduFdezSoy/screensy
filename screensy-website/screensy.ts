@@ -610,8 +610,8 @@ class Room {
         const mediaDevices: MediaDevices = window.navigator.mediaDevices;
 
         // @ts-ignore getDisplayMedia is not supported by TypeScript :(
-        const displayMedia = mediaDevices.getDisplayMedia(mediaConstraints)
-            .then((screenStream) => {
+        const displayMedia = await mediaDevices.getDisplayMedia(mediaConstraints)
+            .then(async (screenStream) => {
                 return mediaDevices.getUserMedia(audioConstraints as MediaStreamConstraints)
                     .then((micStream) => {
                         // pack audio and video together
@@ -658,23 +658,19 @@ class Room {
                         audioDestinationNode.stream.getAudioTracks().forEach(function (track) {
                             composedStream.addTrack(track);
                         });
-
                         return composedStream;
-                    });
+                    }).then((stream) => {
+                        // If the promise is resolved, remove the popup from the screen
+                        hidePopup("click-to-share");
+                        return stream;
+                    }).catch(() => {
+                        // If the promise is rejected, tell the user about the failure
+                        hidePopup("click-to-share");
+                        showPopup("access-denied");
+                    })
             });
 
-        // If the promise is resolved, remove the popup from the screen
-        displayMedia.then(() => {
-            hidePopup("click-to-share");
-        });
-
-        // If the promise is rejected, tell the user about the failure
-        displayMedia.catch(() => {
-            hidePopup("click-to-share");
-            showPopup("access-denied");
-        });
-
-        return displayMedia;
+        return displayMedia as MediaStream;
     }
 }
 
