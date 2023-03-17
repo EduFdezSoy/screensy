@@ -4,7 +4,7 @@ import path = require("path");
 
 const PORT = process.env.port as number | undefined || 8080;
 
-const SERVER = createServer((request: IncomingMessage, response: ServerResponse) => {
+export const SERVER = createServer((request: IncomingMessage, response: ServerResponse) => {
     try {
         if (returnCSS(request, response))
             return;

@@ -1,6 +1,5 @@
+import { Server as HTTPServer } from "http";
 import * as websocket from "ws";
-
-const PORT = process.env.wsPort as number | undefined || 4000
 
 /**
  * Tells the server the client wants to join the given room
@@ -82,13 +81,13 @@ type FromViewerMessage = MessageJoin | MessageWebRTCViewer;
 /**
  * The main entry point.
  */
-export function main(): void {
-    const socket = new websocket.Server({ port: PORT });
+export function main(httpServerInstance: HTTPServer): void {
+    const socket = new websocket.Server({ server: httpServerInstance });
     const server = new Server();
 
     socket.on("connection", (socket: WebSocket) => server.onConnection(socket));
 
-    console.log("WebSocket server started on port", socket.options.port);
+    console.log("WebSocket server started alongside web server");
 }
 
 class Server {
@@ -349,9 +348,9 @@ class Room {
         for (const viewerId in this.viewers) {
             const viewer = this.viewers[viewerId];
             const messageBroadcasterDisconnected: MessageBroadcasterDisconnected =
-                {
-                    type: "broadcasterdisconnected",
-                };
+            {
+                type: "broadcasterdisconnected",
+            };
 
             viewer.send(JSON.stringify(messageBroadcasterDisconnected));
             viewer.close();
