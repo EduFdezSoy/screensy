@@ -36,6 +36,10 @@ COPY package-lock.json /home/node/screensy/
 
 RUN npm install --only=production
 
+# debug
+RUN pwd
+RUN ls -la
+
 # port for website
 EXPOSE 8080
 EXPOSE 4000
