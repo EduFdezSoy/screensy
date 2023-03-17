@@ -99,10 +99,10 @@ function wait(target: EventTarget, listenerName: string): Promise<Event> {
     // Lambda that returns a listener for the given resolve lambda
     const listener =
         (resolve: (value: Event | PromiseLike<Event>) => void) =>
-            (event: Event) => {
-                target.removeEventListener(listenerName, listener(resolve));
-                resolve(event);
-            };
+        (event: Event) => {
+            target.removeEventListener(listenerName, listener(resolve));
+            resolve(event);
+        };
 
     return new Promise((resolve, _reject) => {
         target.addEventListener(listenerName, listener(resolve));
@@ -610,67 +610,20 @@ class Room {
         const mediaDevices: MediaDevices = window.navigator.mediaDevices;
 
         // @ts-ignore getDisplayMedia is not supported by TypeScript :(
-        const displayMedia = await mediaDevices.getDisplayMedia(mediaConstraints)
-            .then(async (screenStream) => {
-                return mediaDevices.getUserMedia(audioConstraints as MediaStreamConstraints)
-                    .then((micStream) => {
-                        // pack audio and video together
-                        const composedStream = new MediaStream();
+        const displayMedia = mediaDevices.getDisplayMedia(mediaConstraints);
 
-                        // add video
-                        screenStream.getVideoTracks().forEach((track) => {
-                            composedStream.addTrack(track);
-                        })
+        // If the promise is resolved, remove the popup from the screen
+        displayMedia.then(() => {
+            hidePopup("click-to-share");
+        });
 
-                        // create audio context
-                        const audioContext = new AudioContext();
+        // If the promise is rejected, tell the user about the failure
+        displayMedia.catch(() => {
+            hidePopup("click-to-share");
+            showPopup("access-denied");
+        });
 
-                        //create new MediaStream destination. This is were our final stream will be.
-                        var audioDestinationNode = audioContext.createMediaStreamDestination();
-
-                        // check if we have audio already
-                        if (screenStream && screenStream.getAudioTracks().length > 0) {
-                            //get the audio from the screen stream
-                            const systemSource = audioContext.createMediaStreamSource(screenStream);
-
-                            //set it's volume (from 0.1 to 1.0)
-                            const systemGain = audioContext.createGain();
-                            systemGain.gain.value = 1.0;
-
-                            //add it to the destination
-                            systemSource.connect(systemGain).connect(audioDestinationNode);
-                        }
-
-                        //check to see if we have a microphone stream and only then add it
-                        if (micStream && micStream.getAudioTracks().length > 0) {
-                            //get the audio from the microphone stream
-                            const micSource = audioContext.createMediaStreamSource(micStream);
-
-                            //set it's volume
-                            const micGain = audioContext.createGain();
-                            micGain.gain.value = 1.0;
-
-                            //add it to the destination
-                            micSource.connect(micGain).connect(audioDestinationNode);
-                        }
-
-                        //add the combined audio stream
-                        audioDestinationNode.stream.getAudioTracks().forEach(function (track) {
-                            composedStream.addTrack(track);
-                        });
-                        return composedStream;
-                    }).then((stream) => {
-                        // If the promise is resolved, remove the popup from the screen
-                        hidePopup("click-to-share");
-                        return stream;
-                    }).catch(() => {
-                        // If the promise is rejected, tell the user about the failure
-                        hidePopup("click-to-share");
-                        showPopup("access-denied");
-                    })
-            });
-
-        return displayMedia as MediaStream;
+        return displayMedia;
     }
 }
 
