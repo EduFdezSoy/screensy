@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+-   Audio support
+
 
 ## 2.0.0 - 2023-03-17
 

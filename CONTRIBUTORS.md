@@ -12,6 +12,7 @@
 -   Eduardo Fernandez
     -   Rewrited the server from Go to Node.js and unified rendezvous and webserver.
     -   Created Docker Container (under ghcr.io)
+    -   Added audio support.
 
 ## Translations
 

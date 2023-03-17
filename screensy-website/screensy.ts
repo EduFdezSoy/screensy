@@ -4,7 +4,7 @@
  * @licstart  The following is the entire license notice for the JavaScript
  * code in this page.
  *
- * Copyright (C) 2021  Stef Gijsberts, Marijn van Wezel
+ * Copyright (C) 2023  Stef Gijsberts, Marijn van Wezel, Eduardo Fernandez
  *
  * The JavaScript code in this page is free software: you can redistribute it
  * and/or modify it under the terms of the GNU General Public License (GNU GPL)
@@ -99,10 +99,10 @@ function wait(target: EventTarget, listenerName: string): Promise<Event> {
     // Lambda that returns a listener for the given resolve lambda
     const listener =
         (resolve: (value: Event | PromiseLike<Event>) => void) =>
-        (event: Event) => {
-            target.removeEventListener(listenerName, listener(resolve));
-            resolve(event);
-        };
+            (event: Event) => {
+                target.removeEventListener(listenerName, listener(resolve));
+                resolve(event);
+            };
 
     return new Promise((resolve, _reject) => {
         target.addEventListener(listenerName, listener(resolve));
@@ -610,7 +610,49 @@ class Room {
         const mediaDevices: MediaDevices = window.navigator.mediaDevices;
 
         // @ts-ignore getDisplayMedia is not supported by TypeScript :(
-        const displayMedia = mediaDevices.getDisplayMedia(mediaConstraints);
+        const displayMedia = mediaDevices.getDisplayMedia(mediaConstraints)
+            .then(async (screenStream) => {
+                const micStream = await mediaDevices.getUserMedia(audioConstraints as MediaStreamConstraints);
+                // pack audio and video together
+                const composedStream = new MediaStream();
+                // add video
+                screenStream.getVideoTracks().forEach((track) => {
+                    composedStream.addTrack(track);
+                });
+                // create audio context
+                const audioContext = new AudioContext();
+                //create new MediaStream destination. This is were our final stream will be.
+                var audioDestinationNode = audioContext.createMediaStreamDestination();
+                // check if we have audio already
+                if (screenStream && screenStream.getAudioTracks().length > 0) {
+                    //get the audio from the screen stream
+                    const systemSource = audioContext.createMediaStreamSource(screenStream);
+
+                    //set it's volume (from 0.1 to 1.0)
+                    const systemGain = audioContext.createGain();
+                    systemGain.gain.value = 1;
+
+                    //add it to the destination
+                    systemSource.connect(systemGain).connect(audioDestinationNode);
+                }
+                //check to see if we have a microphone stream and only then add it
+                if (micStream && micStream.getAudioTracks().length > 0) {
+                    //get the audio from the microphone stream
+                    const micSource = audioContext.createMediaStreamSource(micStream);
+
+                    //set it's volume
+                    const micGain = audioContext.createGain();
+                    micGain.gain.value = 1;
+
+                    //add it to the destination
+                    micSource.connect(micGain).connect(audioDestinationNode);
+                }
+                //add the combined audio stream
+                audioDestinationNode.stream.getAudioTracks().forEach(function (track_2) {
+                    composedStream.addTrack(track_2);
+                });
+                return composedStream;
+            });
 
         // If the promise is resolved, remove the popup from the screen
         displayMedia.then(() => {
