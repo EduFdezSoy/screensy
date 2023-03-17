@@ -5,7 +5,7 @@ WORKDIR /home/node/app
 
 COPY . /home/node/app
 
-RUN npm install typescript@4.4.2 -g
+RUN npm install typescript -g
 RUN npm install --only=development
 RUN npm run compile
 
