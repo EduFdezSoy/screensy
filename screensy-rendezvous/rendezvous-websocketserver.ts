@@ -1,5 +1,7 @@
 import * as websocket from "ws";
 
+const PORT = process.env.wsPort as number | undefined || 4000
+
 /**
  * Tells the server the client wants to join the given room
  */
@@ -80,13 +82,13 @@ type FromViewerMessage = MessageJoin | MessageWebRTCViewer;
 /**
  * The main entry point.
  */
-function main(): void {
-    const socket = new websocket.Server({ port: 4000 });
+export function main(): void {
+    const socket = new websocket.Server({ port: PORT });
     const server = new Server();
 
     socket.on("connection", (socket: WebSocket) => server.onConnection(socket));
 
-    console.log("Server started on port " + socket.options.port);
+    console.log("WebSocket server started on port", socket.options.port);
 }
 
 class Server {
@@ -441,5 +443,3 @@ function instanceOfMessageWebRTCViewer(
 
     return goodType && goodKind && goodMessage;
 }
-
-main();

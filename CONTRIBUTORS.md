@@ -9,6 +9,9 @@
 -   Matt Burbidge ([burbma on GitHub](https://github.com/burbma))
     -   Shared the steps to setup HTTP Basic Authentication and IP whitelisting in
         [pull request #32].
+-   Eduardo Fernandez
+    -   Rewrited the server from Go to Node.js and unified rendezvous and webserver.
+    -   Created Docker (under ghcr.io)
 
 ## Translations
 

@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "start": "node app.js",
+    "compile": "npx tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "@types/ws": "^8.5.4",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "ws": "^8.13.0"
+  }
+}

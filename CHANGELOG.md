@@ -5,6 +5,10 @@ All notable changes to the screensy project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [Unreleased]
+-   Webserver rewrited to node.js and build in a single executable with the rendezvous.
+-   Added Docker Image to ghcr.io
+
 ## 1.9.0 - 2023-02-07
 
 ### Added
