@@ -17,21 +17,26 @@ export const SERVER = createServer((request: IncomingMessage, response: ServerRe
         if (request.url == '/') {
             const lang = request.headers["accept-language"];
             // send the right language file or fallback to en
-            if (lang != null) {
+            var filePath = "";
+            var fileFound = false;
+
+            if (lang != null)
                 getLangArray(lang).every(element => {
-                    const filePath = path.resolve("./screensy-website/translations/" + element + ".html")
-                    const fileFound = existsSync(filePath);
+                    filePath = path.resolve("./screensy-website/translations/" + element + ".html")
+                    fileFound = existsSync(filePath);
 
                     if (fileFound) {
-                        createReadStream(filePath).pipe(response);
                         return false; // stop loop
                     } else {
                         return true; // continue loop
                     }
                 });
+
+            if (fileFound) {
+                createReadStream(filePath).pipe(response);
             } else {
                 // fallback always to english
-                createReadStream(path.resolve("./screensy-website/en.html")).pipe(response);
+                createReadStream(path.resolve("./screensy-website/translations/en.html")).pipe(response);
             }
             response.setHeader("Content-Type", 'text/html');
         } else {
