@@ -99,10 +99,10 @@ function wait(target: EventTarget, listenerName: string): Promise<Event> {
     // Lambda that returns a listener for the given resolve lambda
     const listener =
         (resolve: (value: Event | PromiseLike<Event>) => void) =>
-        (event: Event) => {
-            target.removeEventListener(listenerName, listener(resolve));
-            resolve(event);
-        };
+            (event: Event) => {
+                target.removeEventListener(listenerName, listener(resolve));
+                resolve(event);
+            };
 
     return new Promise((resolve, _reject) => {
         target.addEventListener(listenerName, listener(resolve));
@@ -621,6 +621,19 @@ class Room {
         displayMedia.catch(() => {
             hidePopup("click-to-share");
             showPopup("access-denied");
+        });
+
+        // lets add a mic if there is no audio in the stream already
+        displayMedia.then((displayMedia) => {
+            mediaDevices.getUserMedia({ audio: audioConstraints }).then((micStream) => {
+                if (displayMedia.getAudioTracks().length == 0) {
+                    if (micStream && micStream.getAudioTracks().length > 0) {
+                        micStream.getTracks().forEach((audioTrack) => {
+                            displayMedia.addTrack(audioTrack);
+                        });
+                    }
+                }
+            });
         });
 
         return displayMedia;
