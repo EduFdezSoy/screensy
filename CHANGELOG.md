@@ -7,8 +7,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
--   Audio support
 
+
+## 2.1.0 - 2023-03-19
+
+### Added
+
+-   Audio support (asks for a mic input and adds it to the stream)
 
 ## 2.0.0 - 2023-03-17
 
